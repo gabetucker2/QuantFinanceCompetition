@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **2024 OSU Quantitative Finance Competition** was a highly competitive event in which our team of five, *The Algebros*, secured the **Gold Medal** for achieving the best statistical analysis and Sharpe ratio–adjusted return out of 15 teams.
+The **2024 OSU Quantitative Finance Competition** was a competition in which our team of five, *The Algebros*, secured the 🥇 **Gold Medal** for achieving the best statistical analysis and Sharpe ratio–adjusted return out of 15 teams.
 
 Our trading simulation demonstrated significant portfolio growth, increasing from **$20K to $124K** over a 10-year period.
 
