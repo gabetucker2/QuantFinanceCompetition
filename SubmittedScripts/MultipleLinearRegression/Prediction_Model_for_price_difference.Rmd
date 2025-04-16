@@ -13,6 +13,7 @@ library(readxl)
 library(stargazer)
 library(scales)
 library(quantmod)
+library(readr)
 library(urca)
 ```
 
@@ -20,11 +21,12 @@ library(urca)
 
 
 ```{r data import}
-Merged_data <- read_csv("Merged_data.csv", 
+Merged_data <- read_csv("../../TrainingData/ManualCSVs/MergedData.csv", 
      col_types = cols(Date = col_date(format = "%Y-%m-%d")))
 
 Merged_data$delta_D_high <- Merged_data$High.y - Merged_data$Open.y
-Merged_data$delta_C_high <- Merged_data$High.x- Merged_data$Open.x
+Merged_data$delta_C_high <- Merged_data$High.x - Merged_data$Open.x
+
 ```
 
 ## Including Plots

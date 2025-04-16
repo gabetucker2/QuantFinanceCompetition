@@ -11,8 +11,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r}
-clf <- read.csv("/Users/ulyssesdu/Downloads/CLF_data_1.csv")
-dal <- read.csv("/Users/ulyssesdu/Downloads/DAL_data_1.csv")
+clf <- read.csv("../../TrainingData/OriginalCSVs/CLData.csv")
+dal <- read.csv("../../TrainingData/OriginalCSVs/DAData.csv")
 merged_data <- merge(clf, dal, by = "Date")
 ```
 
@@ -105,7 +105,7 @@ merged_data$lag3_delta_D_squared <- dplyr::lag(merged_data$delta_D_squared,3)
 merged_data$lag4_delta_C_squared <- dplyr::lag(merged_data$delta_C_squared,4)
 merged_data$lag4_delta_D_squared <- dplyr::lag(merged_data$delta_D_squared,4)
 
-write.csv(merged_data, "/Users/ulyssesdu/Downloads/Merged_data.csv")
+write.csv(merged_data, "../../OutputData/Merged_data.csv", row.names = FALSE)
 ```
 
 

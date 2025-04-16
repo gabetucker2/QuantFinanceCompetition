@@ -23,18 +23,18 @@ Our trading simulation demonstrated significant portfolio growth, increasing fro
 
 ### Abandoned Work (prior to deadline)
 
-- **MultimodalSentimentStrategy**: Initially, we focused on creating a unified system to run all our algorithms through a single Python environment. However, we shifted away from this approach in favor of strategies that would produce more immediate results.
+- [**MultimodalSentimentStrategy**](AbandonedScripts/MultimodalAttempt): Initially, we focused on creating a unified system to run all our algorithms through a single Python environment. However, we shifted away from this approach in favor of strategies that would produce more immediate results.
 
-- **ACTRAttempt**: This was an experimental model attempting to implement the ACT-R cognitive architecture, a supervised learning algorithm, in an isolated environment. After evaluating its performance, we decided to abandon this approach due to the complexity and lack of intuitive explanatory power compared to other statistical models. We aim to complete and refine this model post-hackathon.
+- [**ACTRAttempt**](AbandonedScripts/ACTRAttempt): This was an experimental model attempting to implement the ACT-R cognitive architecture, a supervised learning algorithm, in an isolated environment. After evaluating its performance, we decided to abandon this approach due to the complexity and lack of intuitive explanatory power compared to other statistical models. We aim to complete and refine this model post-hackathon.
 
 ### Submitted Work
 
-- **FeatureImportanceAnalysis**: This code was used to analyze the significance of various features in the dataset. Our findings contradicted our initial hypothesis, revealing that CL prices did not significantly impact DA prices.
+- [**Candlesticks**](SubmittedScripts/Candlesticks): A visualization tool designed to display the overall trends in the dataset, aiding in better understanding of the market behavior.
 
-- **Candlesticks**: A visualization tool designed to display the overall trends in the dataset, aiding in better understanding of the market behavior.
+- [**FeatureImportanceAnalysis**](SubmittedScripts/FeatureImportanceAnalysis): This code was used to analyze the significance of various features in the dataset. Our findings contradicted our initial hypothesis, revealing that CL prices did not significantly impact DA prices.
 
-- **MultipleLinearRegression**: This algorithm was used to calculate the coefficients for our **MarketSentimentStrategy**. It was integral in determining how different features interacted and contributed to market predictions.
+- [**MultipleLinearRegression**](SubmittedScripts/MultipleLinearRegression): This algorithm was used to calculate the coefficients for our **MarketSentimentStrategy**. It was integral in determining how different features interacted and contributed to market predictions.
 
-- **MarketSentimentStrategy**: A trading strategy based on market sentiment analysis, which achieved an average return of 20% (with leverage). This strategy was one of our key components, reflecting a solid understanding of market dynamics.
+- [**MarketSentimentStrategy**](SubmittedScripts/MarketSentimentStrategy): A trading strategy based on market sentiment analysis, which achieved an average return of 20% (with leverage). This strategy was one of our key components, reflecting a solid understanding of market dynamics.
 
-- **BrownianStrategy**: A simulation strategy based on Geometric Brownian Motion (GBM) and ordinary differential equations (ODEs). This approach produced an average return of 10.2% (with leverage), outperforming the money market.
+- [**BrownianStrategy**](SubmittedScripts/BrownianStrategy): A simulation strategy based on Geometric Brownian Motion (GBM) and ordinary differential equations (ODEs). This approach produced an average return of 10.2% (with leverage), outperforming the money market.

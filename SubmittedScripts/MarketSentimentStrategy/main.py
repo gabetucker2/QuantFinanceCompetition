@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import random
 
 # Read the CSV file into a DataFrame
-df = pd.read_csv('data.csv', delimiter='\t')
+df = pd.read_csv('../../TrainingData/ManualCSVs/data.csv')
 
 dsv = 0.8
 
