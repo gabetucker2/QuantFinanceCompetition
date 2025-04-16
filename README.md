@@ -10,7 +10,7 @@ Our trading simulation demonstrated significant portfolio growth, increasing fro
 
 - Gabriel Tucker: [[GitHub](https://github.com/gabetucker2)] [[LinkedIn](https://www.linkedin.com/in/gabetucker2/)]
 - Echo Li: [[GitHub](https://github.com/EcchoLi)]
-- Nathan Bayer: [[GitHub](https://github.com/nathanbayer123)]
+- Nathan Bayer: [[GitHub](https://github.com/nathanbayer123)] [[LinkedIn](http://linkedin.com/in/nathan-bayer)]
 - Evelyn Z.: [[GitHub](https://github.com/EvelynZZH11)]
 - Ryan R.: [[GitHub](https://github.com/RyanRunxianDu)]
 
@@ -38,7 +38,3 @@ Our trading simulation demonstrated significant portfolio growth, increasing fro
 - **MarketSentimentStrategy**: A trading strategy based on market sentiment analysis, which achieved an average return of 20% (with leverage). This strategy was one of our key components, reflecting a solid understanding of market dynamics.
 
 - **BrownianStrategy**: A simulation strategy based on Geometric Brownian Motion (GBM) and ordinary differential equations (ODEs). This approach produced an average return of 10.2% (with leverage), outperforming the money market.
-
----
-
-Let me know if you encounter any issues accessing the scripts or need further clarification on any of the strategies!
