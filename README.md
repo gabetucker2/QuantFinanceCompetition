@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **2024 OSU Quantitative Finance Competition** was a competition in which our team of five, *The Algebros*, secured the 🥇 **Gold Medal** for achieving the best statistical analysis and Sharpe ratio–adjusted return out of 15 teams.
+The **2024 OSU Quantitative Finance Competition** was a competition in which our team of five, *The Algebros*, secured the **Gold Medal** for achieving the best statistical analysis and Sharpe ratio–adjusted return out of 15 teams.
 
 Our trading simulation demonstrated significant portfolio growth, increasing from **$20K to $124K** over a 10-year period.
 
@@ -23,7 +23,7 @@ Our trading simulation demonstrated significant portfolio growth, increasing fro
 
 ### Abandoned Work (prior to deadline)
 
-- **MultimodalSentimentStrategy**: Initially, we focused on creating a unified system to run all our algorithms through a single Python environment. However, we shifted away from this approach in favor of strategies that would produce more immediate results. We plan to revisit and expand this codebase for real-world stock trading once the hackathon concludes.
+- **MultimodalSentimentStrategy**: Initially, we focused on creating a unified system to run all our algorithms through a single Python environment. However, we shifted away from this approach in favor of strategies that would produce more immediate results.
 
 - **ACTRAttempt**: This was an experimental model attempting to implement the ACT-R cognitive architecture, a supervised learning algorithm, in an isolated environment. After evaluating its performance, we decided to abandon this approach due to the complexity and lack of intuitive explanatory power compared to other statistical models. We aim to complete and refine this model post-hackathon.
 
