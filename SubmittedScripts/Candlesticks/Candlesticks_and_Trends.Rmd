@@ -28,13 +28,13 @@ dal$Date <- as.Date(dal$Date, format="%Y-%m-%d")
 dal$Open <- as.numeric(dal$Open)
 dal$Close <- as.numeric(dal$Close)
 
-plot(clf$Date, clf$Open, type = 'l', main = 'Open Price Over Time', xlab = 'Date', ylab = 'Open Price', col = 'blue')
+plot(clf$Date, clf$Open, type = 'l', main = 'Crude Oil Opening Prices Over Time', xlab = 'Date', ylab = 'Open Price', col = 'blue')
 
-plot(clf$Date, clf$Close, type = 'l', main = 'Close Price Over Time', xlab = 'Date', ylab = 'Close Price', col = 'blue')
+plot(clf$Date, clf$Close, type = 'l', main = 'Crude Oil Closing Prices Over Time', xlab = 'Date', ylab = 'Close Price', col = 'blue')
 
-plot(dal$Date, dal$Open, type = 'l', main = 'Open Price Over Time', xlab = 'Date', ylab = 'Open Price', col = 'red')
+plot(dal$Date, dal$Open, type = 'l', main = 'Delta Air Opening Prices Over Time', xlab = 'Date', ylab = 'Open Price', col = 'red')
 
-plot(dal$Date, dal$Close, type = 'l', main = 'Close Price Over Time', xlab = 'Date', ylab = 'Close Price', col = 'red')
+plot(dal$Date, dal$Close, type = 'l', main = 'Delta Air Closing Prices Over Time', xlab = 'Date', ylab = 'Close Price', col = 'red')
 
 ```
 
@@ -47,7 +47,7 @@ x_max <- max(c(max(clf$Date), max(dal$Date)))
 
 plot(clf$Date, clf$Open, type = 'l', col = 'blue', lwd = 2,
      xlim = c(x_min, x_max), ylim = c(y_min, y_max),
-     xlab = "Date", ylab = "Open Price", main = "Open Prices Comparison",
+     xlab = "Date", ylab = "Open Price", main = "Opening Prices Comparison",
      xaxt = 'n') 
 
 
@@ -63,7 +63,7 @@ x_max1 <- max(c(max(clf$Date), max(dal$Date)))
 
 plot(clf$Date, clf$Close, type = 'l', col = 'blue', lwd = 2,
      xlim = c(x_min1, x_max1), ylim = c(y_min1, y_max1),
-     xlab = "Date", ylab = "Close Price", main = "Close Prices Comparison",
+     xlab = "Date", ylab = "Close Price", main = "Closing Prices Comparison",
      xaxt = 'n') 
 
 

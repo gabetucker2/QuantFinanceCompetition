@@ -17,7 +17,6 @@ Our trading simulation demonstrated significant portfolio growth, increasing fro
 ## Announcement post and photos
 
 ![Announcement Post](Images/announcementPost.jpg)
-![Room](Images/room.jpg)
 
 ## Project Timeline
 
