@@ -76,8 +76,8 @@ lines(dal$Date, dal$Close, type = 'l', col = 'red', lwd = 2)
 ```{r}
 library(quantmod)
 
-chartSeries(clf, type = "candlesticks",theme = chartTheme("white"))
-chartSeries(dal, type = "candlesticks",theme = chartTheme("white"))
+chartSeries(clf, type = "candlesticks",theme = chartTheme("white"),name="CLF Candlesticks")
+chartSeries(dal, type = "candlesticks",theme = chartTheme("white"),name="DAL Candlesticks")
 
 ```
 
