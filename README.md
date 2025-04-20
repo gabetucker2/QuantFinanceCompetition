@@ -47,11 +47,23 @@ First, we decided to visualize the two datasets we were working with, using "can
 
 ## 🧠 [**FeatureImportanceAnalysis**](SubmittedScripts/FeatureImportanceAnalysis): Hypothesis Testing & Parameter Diagnostics
 
-- This code was used to perform feature importance analysis—a process for analyzing stock-related features' (i.e., parameters') predictive power for other causally-connected features. There are two feature importance analysis algorithms we used: SelectKBest and RandomForest.
+## Intro
+
+This code was used to perform feature importance analysis—a process for analyzing stock-related features' (i.e., parameters') predictive power for other causally-connected features. There were 5 features we included per dataset in our analysis:
+
+* `Yesterday's closing price` (DAAdjCloseToday) *(in retrospect should have been better named)*
+* `Today's closing price` (DACloseToday)
+* `Today's highest price` (DAHighToday)
+* `Today's lowest price` (DALowToday)
+* `Today's trading volume` (DAVolumeToday)
+
+We also only performed feature importance analysis on DAL stock feature importance because we were tasked with trading in Delta Airlines stocks, not crude oil stocks. So by performing feature importance on DAL features, we analyze how those features are affected by A) other available DAL features and B) available CL features.
+
+It is also worth noting we originally attempted to create a modular framework for various feature importance analysis algorithms (available in our project code), but dropped this due to time constraints.
 
 ### SelectKBest
 
-SelectKBest ranks features by their individual linear relationship with the target variable, using an F-statistic derived from univariate linear regression.
+SelectKBest is the algorithm we initially decided on to perform feature importance analysis. The algorithm ranks features by their individual linear relationship with the target variable, using an F-statistic derived from univariate linear regression.
 
 We used SelectKBest to quickly identify features with the strongest direct signal, without accounting for interactions or redundancy.
 
@@ -60,6 +72,8 @@ We used SelectKBest to quickly identify features with the strongest direct signa
 ![Images/target_DAHighToday_feature_importance-1.png](Images/target_DAHighToday_feature_importance-1.png)
 ![Images/target_DALowToday_feature_importance-1.png](Images/target_DALowToday_feature_importance-1.png)
 ![Images/target_DAVolumeToday_feature_importance-1.png](Images/target_DAVolumeToday_feature_importance-1.png)
+
+We were unsatisfied with these results since it revealed such negligible differences between all features except today's trading volume, so we decided to use an alternative feature importance analysis algorithm in hopes that it might yield something else interesting before analyzing our feature importance analysis outputs:
 
 ### RandomForest
 
@@ -72,6 +86,12 @@ We used Random Forest to uncover complex relationships that SelectKBest might mi
 ![Images/target_DAHighToday_RandomForest_feature_importance-1.png](Images/target_DAHighToday_RandomForest_feature_importance-1.png)
 ![Images/target_DALowToday_RandomForest_feature_importance-1.png](Images/target_DALowToday_RandomForest_feature_importance-1.png)
 ![Images/target_DAVolumeToday_RandomForest_feature_importance-1.png](Images/target_DAVolumeToday_RandomForest_feature_importance-1.png)
+
+This seems to have doubled down on the intitial results, increasing the importance of DAOpenToday on corresponding features.
+
+## Analyzing outputs
+
+
 
 ---
 
