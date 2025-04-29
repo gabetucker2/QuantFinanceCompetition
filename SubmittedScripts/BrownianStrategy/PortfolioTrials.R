@@ -1,63 +1,78 @@
 # load the dataset
-data = read.csv("~/SOA/Time Series Data.csv")
+data <- read.csv("../../TrainingData/ManualCSVs/BrownianData.csv")
 
-# create a black-scholes function to estimate future stock price
-calcBS = function(S0, r, sigma, t){
-  return(S0*exp((r - (sigma**2)/2)*t + sigma*rnorm(1,0,t)))
+# create a Black-Scholes function to estimate future stock price
+calcBS <- function(S0, r, sigma, t) {
+  return(S0 * exp((r - (sigma^2) / 2) * t + sigma * rnorm(1, 0, t)))
 }
 
-# create an empty list to store the values from the trials
-trials = numeric()
+# create a vector to store final portfolio values from each trial
+final_portfolio_values <- numeric()
 
-# define our moving average recursively, starting at 0
-S = 0
-
-# this for loop runs through each trial
-for (j in 1:1000){
-  # creating empty lists
-  port_values =  c(10000)
-  a1_list = numeric()
-  a2_list = numeric()
-  # this for loop runs the algorithm on all of the past dates
-  for (i in 1:(nrow(data)-1)){
-    # setting parameters
-    S0 = data[i,3]
-    C0 = data[i,2]
-    r = log(1.0527)
-    sigma1 = 0.027947
-    sigma2 = 0.026567
-    t = 1/252
-    # defining the objective function to maximize, which is our expected future portfolio value equation
-    f = function(x){
-      S0 = data[i,3]
-      C0 = data[i,2]
-      r = log(1.0527)
-      sigma = 0.1
-      t = 1/252
-      return((port_values[length(port_values)] - x[1]*S0 - x[2]*C0)*exp(r*t) + x[1]*calcBS(S0, r, sigma1, t) + x[2]*calcBS(C0, r, sigma2, t))
-    }
-    # performing the optimization calculation
-    result <- optim(par = c(0,0), fn = f, method = "L-BFGS-B")
-    a1 = result$par[1]
-    a2 = result$par[2]
-    a1_list <- c(a1_list, a1)
-    a2_list <- c(a2_list, a2)
-    S1 = data[i+1,3]
-    S2 = data[i+1,2]
+# run 1000 Monte Carlo trials
+for (j in 1:1000) {
+  # initialize portfolio value
+  port_values <- c(10000)
+  
+  # loop through each date
+  for (i in 1:(nrow(data) - 1)) {
+    # parameters
+    S0 <- data$Close.x[i]  # Asset 1
+    C0 <- data$Close.y[i]  # Asset 2
+    r <- log(1.0527)
+    sigma1 <- 0.027947
+    sigma2 <- 0.026567
+    t <- 1/252
     
-    # calculate the actual portfolio value based on our algorithm's decision
-    port_val = (port_values[length(port_values)] - a1*S0 - a2*C0)*exp(r*t) + a1*S1 + a2*S2
-    # store the portfolio values in the list
-    port_values <- c(port_values, port_val)
+    # define objective: maximize expected future portfolio value
+    f <- function(x) {
+      cash_after_purchase <- port_values[length(port_values)] - x[1]*S0 - x[2]*C0
+      
+      # if cash is NaN or Inf or absurd, penalize heavily
+      if (!is.finite(cash_after_purchase)) return(Inf)
+      
+      expected_value <- cash_after_purchase * exp(r*t) +
+        x[1]*calcBS(S0, r, sigma1, t) +
+        x[2]*calcBS(C0, r, sigma2, t)
+      
+      if (!is.finite(expected_value)) return(Inf)
+      
+      return(-expected_value)  # IMPORTANT: optim minimizes by default
+    }
+    
+    # perform optimization
+    result <- optim(par = c(0, 0), fn = f, method = "L-BFGS-B")
+    a1 <- result$par[1]
+    a2 <- result$par[2]
+    
+    # apply 2x leverage scaling
+    exposure_now <- abs(a1 * S0) + abs(a2 * C0)
+    desired_exposure <- 2 * port_values[length(port_values)]  # 2x leverage
+    scaling_factor <- desired_exposure / exposure_now
+    
+    a1 <- a1 * scaling_factor
+    a2 <- a2 * scaling_factor
+    
+    # update portfolio with real next-day prices
+    S1 <- data$Close.x[i + 1]
+    S2 <- data$Close.y[i + 1]
+    
+    next_port_value <- (port_values[length(port_values)] - a1*S0 - a2*C0) * exp(r*t) +
+      a1*S1 + a2*S2
+    port_values <- c(port_values, next_port_value)
   }
-  trial = port_values[length(port_values)-1]
-  # update our moving average
-  S = S + trial
-  trials <- c(trials, S/j)
+  
+  # store final portfolio value from this trial
+  final_portfolio_values <- c(final_portfolio_values, port_values[length(port_values)])
 }
 
-# calculate our final estimate, which is the average across all trials
-final_value_estimate = trials[length(trials)] 
+# compute overall average across trials
+average_final_value <- mean(final_portfolio_values)
+average_return_percent <- ((average_final_value / 10000) - 1) * 100
 
-# plot the moving average vs trial number
-plot(trials, xlab = "Trial Number", ylab = "Portfolio Value Estimate", type = "l")
+# output the results
+cat("Average final portfolio value across all trials:", round(average_final_value, 2), "\n")
+cat("Average return relative to starting capital:", round(average_return_percent, 2), "%\n")
+
+# plot the final portfolio values over trials
+plot(final_portfolio_values, type = "l", xlab = "Trial Number", ylab = "Final Portfolio Value")

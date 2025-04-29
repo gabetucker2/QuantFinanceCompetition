@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **2024 OSU Quantitative Finance Competition** was a competition in which our team of five, *The Algebros*, secured the **Gold Medal** for achieving the best statistical analysis and Sharpe ratio–adjusted return out of 15 teams.
+The **2024 OSU Quantitative Finance Competition** was a competition in which our team, *The Algebros*, secured the **Gold Medal** for achieving the best statistical analysis and Sharpe ratio–adjusted return out of 15 teams.
 
 Our models increased our **$10k** portfolio budget (with 2x leveraged return) to **$124K** through day trading over a 10-year period in our simulations.
 
@@ -11,8 +11,6 @@ Our models increased our **$10k** portfolio budget (with 2x leveraged return) to
 - Gabriel Tucker: [[GitHub](https://github.com/gabetucker2)] [[LinkedIn](https://www.linkedin.com/in/gabetucker2/)]
 - Echo Li: [[GitHub](https://github.com/EcchoLi)]
 - Nathan Bayer: [[GitHub](https://github.com/nathanbayer123)] [[LinkedIn](http://linkedin.com/in/nathan-bayer)]
-- Evelyn Z.: [[GitHub](https://github.com/EvelynZZH11)]
-- Ryan R.: [[GitHub](https://github.com/RyanRunxianDu)]
 
 ## Announcement post and photos
 
@@ -22,7 +20,7 @@ Our models increased our **$10k** portfolio budget (with 2x leveraged return) to
 
 ### Disclaimer
 
-The only post hoc revisions made to our scripts were in order to make the scripts capable of running in a repo clone's local environment without any changes, in case someone else would like to run the scripts for themselves.  We also slightly modified the titles of our existing graphs for sake of clarity in this.
+The only post hoc revisions made to our scripts were in order to make the scripts capable of running in a repo clone's local environment without any changes, in case someone else would like to run the scripts for themselves.  We also slightly modified the titles of our existing graphs for sake of clarity in a non-video presentation format.
 
 ### Abandoned Work (prior to deadline)
 
@@ -87,17 +85,61 @@ We used Random Forest to uncover complex relationships that SelectKBest might mi
 ![Images/target_DALowToday_RandomForest_feature_importance-1.png](Images/target_DALowToday_RandomForest_feature_importance-1.png)
 ![Images/target_DAVolumeToday_RandomForest_feature_importance-1.png](Images/target_DAVolumeToday_RandomForest_feature_importance-1.png)
 
-This seems to have doubled down on the intitial results, increasing the importance of DAOpenToday on corresponding features.
+This seems to have confirmed our SelectKBest results, increasing the importance of DAOpenToday on corresponding features.
 
-## Analyzing outputs
+### Analyzing outputs
 
+`DAOpenToday` is far and away the strongest predictor of other features, aside from volume. This makes sense at face value, but let's explain the volume's discrepancy:
 
+In the case of volume, in which case yesterday's opening price is more impactful (according to RF). We can infer this is due to how increased variability in DAL stock trading implies the market implies some sort of volatility with current events. Latent variables might account for why yesterday's opening price is more impactful than today's opening price on predicting today's trading volume.
+
+The main other observation is the feature importance strength for parameters of *non* `DAOpenToday` features.  Let's list out the importance score range of each CL feature for predicting DA features:
+
+#### SelectKBest
+
+* DAAdjCloseToday: 10<sup>2</sup> - 10<sup>3</sup>
+* DACloseToday: 10<sup>2</sup> - 10<sup>3</sup>
+* DAHighToday: 10<sup>2</sup> - 10<sup>3</sup>
+* DACloseToday: 10<sup>2</sup> - 10<sup>3</sup>
+* DAVolumeToday: 10<sup>1</sup> - 10<sup>2</sup>
+
+#### RandomForest
+
+* DAAdjCloseToday: 10<sup>-1</sup> - 10<sup>-2</sup>
+* DACloseToday: 10<sup>-3</sup>
+* DAHighToday: 10<sup>-4</sup> - 10<sup>-3</sup>
+* DACloseToday: 10<sup>-2</sup> - 10<sup>-3</sup>
+* DAVolumeToday: 10<sup>-2</sup> - 10<sup>0</sup>
+
+RandomForest's feature importance analysis is much better at delineating low-importance features from high-importance features.  As a result, let's focus on RandomForest results.
+
+`DAAdjCloseToday` has very high non-DAOpenToday prediction importance (relative to other parameters).
+
+`DACloseToday` shows moderate non-DAOpenToday prediction importance, but noticeably weaker than DAAdjCloseToday. This suggests that while today's closing price is influenced by other factors, it does not aggregate predictive signals as robustly as the adjusted close.
+
+`DAHighToday` has extremely low predictive power relative to other parameters, consistent with the intuition that intraday highs are more susceptible to random market fluctuations and less structurally determined by other features.
+
+`DALowToday` exhibits low-to-moderate predictive power, slightly stronger than DAHighToday but still weaker than closing prices. This suggests that low prices may have some anchored dependency on broader trading conditions but are still less structured than closing metrics.
+
+`DAVolumeToday` has high predictive power for the same reasons discussed earlier: market volume is influenced by latent volatility signals, which are more closely connected to prior pricing and sentiment factors (such as yesterday’s opening price) than to static technical indicators.
 
 ---
 
-## 📊 MultipleLinearRegression: Baseline Modeling Framework
+## 📉 [**BrownianStrategy**](SubmittedScripts/BrownianStrategy): Stochastic Price Simulation
 
-- [**MultipleLinearRegression**](SubmittedScripts/MultipleLinearRegression): This algorithm was used to calculate the coefficients for our **MarketSentimentStrategy**. It was integral in determining how different features interacted and contributed to market predictions.
+- [**BrownianStrategy**](SubmittedScripts/BrownianStrategy): A simulation strategy based on Geometric Brownian Motion (GBM) and ordinary differential equations (ODEs). This approach produced an average return of 88.73% (with 2x leverage), outperforming the money market, but not as markedly as our market sentiment analysis strategy.
+
+One trial (x-axis representing days passed within one trial):
+
+![Images/BrownianMotion.png](Images/BrownianMotion.png)
+
+1000 trials (x-axis representing final value of each trial) (average final value: $28873.23):
+
+![Images/BrownianMotionTrials.png](Images/BrownianMotionTrials.png)
+
+## 📊 MultipleLinearRegression: Parameter Retrieval for Market Sentiment Strategy
+
+- [**MultipleLinearRegression**](SubmittedScripts/MultipleLinearRegression): MLR was used to calculate the coefficients for our market sentiment analysis. It was integral in determining how different features interacted and contributed to market predictions.
 
 
 
@@ -107,20 +149,4 @@ This seems to have doubled down on the intitial results, increasing the importan
 
 - [**MarketSentimentStrategy**](SubmittedScripts/MarketSentimentStrategy): A trading strategy based on market sentiment analysis, which achieved an average return of 20% (with leverage). This strategy was one of our key components, reflecting a solid understanding of market dynamics.
 
-**Timeline**:
-- Translated regression outputs into trade signal weights.
-  - *Illustration: Flow diagram of sentiment signal to trade execution.*
-- Backtested strategy across different market regimes.
-  - *Illustration: Equity curve comparing strategy vs baseline.*
-
 ---
-
-## 📉 BrownianStrategy: Stochastic Price Simulation
-
-- [**BrownianStrategy**](SubmittedScripts/BrownianStrategy): A simulation strategy based on Geometric Brownian Motion (GBM) and ordinary differential equations (ODEs). This approach produced an average return of 10.2% (with leverage), outperforming the money market.
-
-**Timeline**:
-- Simulated price paths using GBM with historical volatility.
-  - *Illustration: Multiple GBM sample paths plotted over time.*
-- Applied Monte Carlo strategy testing over simulated trajectories.
-  - *Illustration: Histogram of returns across simulation runs.*
