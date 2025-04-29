@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **2024 OSU Quantitative Finance Competition** was a competition in which our team, *The Algebros*, secured the **Gold Medal** for achieving the best statistical analysis and Sharpe ratio–adjusted return out of 15 teams.
+The **2024 OSU Quantitative Finance Competition** was a competition in which our team secured the **Gold Medal** for achieving the best statistical analysis and Sharpe ratio–adjusted return out of 15 teams.
 
 Our models increased our **$10k** portfolio budget (with 2x leveraged return) to **$124K** through day trading over a 10-year period in our simulations.
 
@@ -127,7 +127,9 @@ RandomForest's feature importance analysis is much better at delineating low-imp
 
 ## 📉 [**BrownianStrategy**](SubmittedScripts/BrownianStrategy): Stochastic Price Simulation
 
-- [**BrownianStrategy**](SubmittedScripts/BrownianStrategy): A simulation strategy based on Geometric Brownian Motion (GBM) and ordinary differential equations (ODEs). This approach produced an average return of 88.73% (with 2x leverage), outperforming the money market, but not as markedly as our market sentiment analysis strategy.
+- [**BrownianStrategy**](SubmittedScripts/BrownianStrategy):
+
+A simulation strategy based on Geometric Brownian Motion (GBM) and ordinary differential equations. This approach produced an average return of 88.73% (with 2x leverage), outperforming the money market, but not as markedly as our market sentiment analysis strategy.
 
 One trial (x-axis representing days passed within one trial):
 
@@ -139,14 +141,24 @@ One trial (x-axis representing days passed within one trial):
 
 ## 📊 MultipleLinearRegression: Parameter Retrieval for Market Sentiment Strategy
 
-- [**MultipleLinearRegression**](SubmittedScripts/MultipleLinearRegression): MLR was used to calculate the coefficients for our market sentiment analysis. It was integral in determining how different features interacted and contributed to market predictions.
+- [**MultipleLinearRegression**](SubmittedScripts/MultipleLinearRegression):
 
+MLR was used to calculate the coefficients for our market sentiment analysis.  It was integral in determining how different features interacted and contributed to market predictions.
 
+![Images/MLREstimates.png](Images/MLREstimates.png)
+
+Then implemented in our MarketSentimentStrategy script:
+
+![Images/paramsInCode.png](Images/paramsInCode.png)
 
 ---
 
 ## 🧭 MarketSentimentStrategy: Sentiment-Based Trading Logic
 
-- [**MarketSentimentStrategy**](SubmittedScripts/MarketSentimentStrategy): A trading strategy based on market sentiment analysis, which achieved an average return of 20% (with leverage). This strategy was one of our key components, reflecting a solid understanding of market dynamics.
+- [**MarketSentimentStrategy**](SubmittedScripts/MarketSentimentStrategy):
+
+A trading strategy based on market sentiment analysis, which achieved an average return of 20% (with leverage). This strategy was one of our key components, reflecting a solid understanding of market dynamics.
+
+
 
 ---
