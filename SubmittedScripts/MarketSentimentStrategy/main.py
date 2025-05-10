@@ -1,101 +1,101 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import random
+import numpy as np
+import statistics
 
-# Read the CSV file into a DataFrame
-df = pd.read_csv('../../TrainingData/ManualCSVs/data.csv')
+df = pd.read_csv('../../TrainingData/ManualCSVs/combined.csv')
+
+# Use only rows 1351 and beyond because MLR uses 0 through 1350
+df = df.iloc[1350:].reset_index(drop=True)
 
 dsv = 0.8
-
-ALPHA = 0.51582  * dsv
+ALPHA = 0.51582 * dsv
 BETA1 = -0.04540 * dsv
-BETA2 = 0.05334  * dsv
-BETA3 = 0.03338  * dsv
-
-trainSet = 1300
-df = df.iloc[trainSet:]
-
-epochs = 1
+BETA2 = 0.05334 * dsv
+BETA3 = 0.03338 * dsv
 
 lossSellPercent = 0.02
-
-buyPrices = []
-sellPrices = []
-
-deltaMoney = 0
-
 leverage = True
 leverageMultiplier = 2
-
-workingFinalPrice = 0
-
 startMoney = 10000
+years = 10
+days_per_year = 252
+num_trials = 1000
 
-daysToSelect = 252 # 1 trading year per epoch
+# Storage
+final_money_list = []
+growth_factors = []
+all_money_over_time = []
 
-moneyOverTime = []
-
-for e in range(epochs):
-
+# Simulation
+for trial in range(num_trials):
     workingMoney = startMoney
-    moneyOverTime = [workingMoney] # track money over time
+    moneyOverTime = [workingMoney]
 
-    sampled_indices = random.sample(range(len(df)), daysToSelect)
-    for idx in sampled_indices: # probablistic
+    for year in range(years):
+        sampled_indices = random.sample(range(len(df)), days_per_year)
+        for idx in sampled_indices:
+            row = df.iloc[idx]
 
-    # startDay = 0
-    # for idx in range(startDay, 252*2): # first 252
-        
-        row = df.iloc[idx]  # Get the row corresponding to the index
+            open_da = row['OpenDA']
+            high_da = row['HighDA']
+            low_da = row['LowDA']
+            close_da = row['CloseDA']
+            ldd = row['LDD']
+            ldds = row['LDDS']
+            l2dds = row['L2DDS']
 
-        open_cl = row['OpenCL']
-        high_cl = row['HighCL']
-        low_cl = row['LowCL']
-        close_cl = row['CloseCL']
-        open_da = row['OpenDA']
-        high_da = row['HighDA']
-        low_da = row['LowDA']
-        close_da = row['CloseDA']
-        ldd = row['LDD']
-        ldds = row['LDDS']
-        l2dds = row['L2DDS']
-        
-        buyPrice = open_da
-        stopPrice = buyPrice * (1-lossSellPercent)
-        shares = workingMoney / buyPrice
+            buyPrice = open_da
+            stopPrice = buyPrice * (1 - lossSellPercent)
+            shares = workingMoney / buyPrice
 
-        deltaToHighest = ALPHA + BETA1*ldd + BETA2*ldds + BETA3*l2dds
-        highestEstimate = open_da + deltaToHighest
+            deltaToHighest = ALPHA + BETA1 * ldd + BETA2 * ldds + BETA3 * l2dds
+            highestEstimate = open_da + deltaToHighest
 
-        sellPrice = 0
-        if high_da >= highestEstimate:
-            sellPrice = highestEstimate
-        elif low_da < stopPrice:
-            sellPrice = stopPrice
-        else:
-            sellPrice = close_da
+            if high_da >= highestEstimate:
+                sellPrice = highestEstimate
+            elif low_da < stopPrice:
+                sellPrice = stopPrice
+            else:
+                sellPrice = close_da
 
-        deltaShare = sellPrice - buyPrice
+            deltaShare = sellPrice - buyPrice
+            if leverage:
+                workingMoney += deltaShare * shares * leverageMultiplier
+            else:
+                workingMoney += deltaShare * shares
 
-        if leverage:
-            workingMoney += deltaShare*shares*leverageMultiplier
-        else:
-            workingMoney += deltaShare*shares
-        moneyOverTime.append(workingMoney)
+            moneyOverTime.append(workingMoney)
 
-    workingFinalPrice += moneyOverTime[-1]
+    final_money_list.append(workingMoney)
+    growth_factors.append(workingMoney / startMoney)
+    all_money_over_time.append(moneyOverTime)
 
-averageFinalMoney = workingFinalPrice / epochs
+# Printing and plotting information
 
-print(f"Days: {daysToSelect}")
-print(f"Leverage: {leverage}")
-print(f"Simulations: {epochs}")
-print(f"Average final money: {averageFinalMoney}")
-print(f"Money gained: {averageFinalMoney - startMoney}")
-print(f"% money increase: {((averageFinalMoney/startMoney)-1)*100}%")
+average_final_money = np.mean(final_money_list)
+median_final_money = np.median(final_money_list)
+std_final_money = np.std(final_money_list)
+min_final_money = np.min(final_money_list)
+max_final_money = np.max(final_money_list)
+geometric_mean_growth = statistics.geometric_mean(growth_factors)
+compounded_projection = startMoney * geometric_mean_growth
 
-plt.plot(moneyOverTime)
-plt.xlabel('Time step')
+summary = {
+    "Median Final Money": median_final_money,
+    "Geometric Mean Growth Factor": geometric_mean_growth,
+    "Compounded 10-Year Projection": compounded_projection
+}
+
+print("\nSummary Statistics for 10-Year Simulation (100 Trials):")
+for key, value in summary.items():
+    print(f"{key}: {value:,.2f}")
+
+plt.figure(figsize=(12, 6))
+for trialMoney in all_money_over_time:
+    plt.plot(trialMoney, alpha=0.3)
+plt.xlabel('Day')
 plt.ylabel('Money')
-plt.title('Random Days from the 5 Years After Training')
+plt.title(f'{num_trials} Simulated 10-Year Trials')
 plt.show()
