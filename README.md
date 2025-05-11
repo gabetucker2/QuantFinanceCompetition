@@ -12,10 +12,6 @@ Our models increased our **$10k** portfolio budget (with 2x leveraged return) to
 - Echo Li: [[GitHub](https://github.com/EcchoLi)]
 - Nathan Bayer: [[GitHub](https://github.com/nathanbayer123)] [[LinkedIn](http://linkedin.com/in/nathan-bayer)]
 
-## Announcement post and photos
-
-![Announcement Post](Images/announcementPost.jpg)
-
 ## Technologies Used
 
 - **Python 3.11** – Primary programming language for all modeling, analysis, and simulation scripts
@@ -31,6 +27,10 @@ Our models increased our **$10k** portfolio budget (with 2x leveraged return) to
 - **VSCode** – Main development environment for code collaboration
 - **Git + GitHub** – Version control and public codebase hosting
 - **CSV Imports/Manipulation + Microsoft Excel** – Historical financial data, some manually and some procedurally curated into CSVs
+
+## Announcement post and photos
+
+![Announcement Post](Images/announcementPost.jpg)
 
 ## Foreword
 
