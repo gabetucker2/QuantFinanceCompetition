@@ -18,9 +18,9 @@ Our models increased our **$10k** portfolio budget (with 2x leveraged return) to
 
 ## Foreword
 
-### Disclaimer
+### Post hoc code revisions
 
-The only post hoc revisions made to our scripts were in order to make the scripts capable of running in a repo clone's local environment without any changes, in case someone else would like to run the scripts for themselves.  We also slightly modified the titles of our existing graphs for sake of clarity in a non-video presentation format, and the market sentiment analysis code was slightly revised for ease-of-use by people unfamiliar with the script.
+The only revisions made to our scripts after the competitions were in order to make the scripts capable of running in a repo clone's local environment without any changes, in case someone else would like to run the scripts for themselves.  We also slightly modified the titles of our existing graphs for sake of clarity in a non-video presentation format, and the market sentiment analysis code was slightly revised for ease-of-use by people unfamiliar with the script.
 
 ### Abandoned Work (prior to deadline)
 
