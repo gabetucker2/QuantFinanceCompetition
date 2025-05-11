@@ -46,7 +46,7 @@ The only revisions made to our scripts after the competitions were in order to m
 
 ## Submitted Work Timeline
 
-## 📈 [**Candlesticks**](SubmittedScripts/Candlesticks): Surface-Level Analysis of Market Data
+## [**Candlesticks**](SubmittedScripts/Candlesticks): Surface-Level Analysis of Market Data
 
 First, we decided to visualize the two datasets we were working with, using "candlestick" visualization method, so that we could have a baseline understanding of the market's behavior over the past decade and verify data integrity (which turned out to be useful, because one of the datasets we were using was incorrect).
 
@@ -59,7 +59,7 @@ First, we decided to visualize the two datasets we were working with, using "can
 
 ---
 
-## 🧠 [**FeatureImportanceAnalysis**](SubmittedScripts/FeatureImportanceAnalysis): Hypothesis Testing & Parameter Diagnostics
+## [**FeatureImportanceAnalysis**](SubmittedScripts/FeatureImportanceAnalysis): Hypothesis Testing & Parameter Diagnostics
 
 ## Intro
 
@@ -141,7 +141,7 @@ RandomForest's feature importance analysis is much better at delineating low-imp
 
 ---
 
-## 📉 [**BrownianStrategy**](SubmittedScripts/BrownianStrategy): Stochastic Price Simulation
+## [**BrownianStrategy**](SubmittedScripts/BrownianStrategy): Stochastic Price Simulation
 
 - [**BrownianStrategy**](SubmittedScripts/BrownianStrategy):
 
@@ -155,7 +155,7 @@ One trial (x-axis representing days passed within one trial):
 
 ![Images/BrownianMotionTrials.png](Images/BrownianMotionTrials.png)
 
-## 📊 MultipleLinearRegression: Parameter Retrieval for Market Sentiment Strategy
+## MultipleLinearRegression: Parameter Retrieval for Market Sentiment Strategy
 
 - [**MultipleLinearRegression**](SubmittedScripts/MultipleLinearRegression):
 
@@ -171,7 +171,7 @@ Finally, we manually edited our combined.csv file using Microsoft Excel function
 
 ---
 
-## 🧭 MarketSentimentStrategy: Sentiment-Based Trading Logic
+## MarketSentimentStrategy: Sentiment-Based Trading Logic
 
 - [**MarketSentimentStrategy**](SubmittedScripts/MarketSentimentStrategy):
 
