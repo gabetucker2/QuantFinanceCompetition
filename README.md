@@ -4,7 +4,7 @@
 
 The **2024 OSU Quantitative Finance Competition** was a competition in which our team secured the **Gold Medal** for achieving the best statistical analysis and Sharpe ratio–adjusted return out of 15 teams.
 
-Our models increased our **$10k** portfolio budget (with 2x leveraged return) to **$124K** through day trading over a 10-year period in our simulations.
+Our market sentiment strategy increased our **$10k** portfolio budget (with 2x leveraged return) to **$124k** through day trading over a 10-year period in our simulations.  After additional revisions to improve accuracy, it increased a **$10k** portfolio budget (with 2x leveraged return) to **$114** over the same 10-year period.
 
 ## Team Members
 
@@ -32,11 +32,26 @@ Our models increased our **$10k** portfolio budget (with 2x leveraged return) to
 - **Git + GitHub** – Version control and public codebase hosting
 - **CSV Imports/Manipulation + Microsoft Excel** – Historical financial data, some manually and some procedurally curated into CSVs
 
+## Table of Contents
+- Overview
+- Team Members
+- Announcement Post
+- Technologies Used
+- Table of Contents
+- Foreword
+- Submitted Work Timeline
+  - Candlesticks
+  - FeatureImportanceAnalysis
+  - BrownianStrategy
+  - MultipleLinearRegression
+  - MarketSentimentStrategy
+- Final Analysis
+
 ## Foreword
 
 ### Post Hoc Code Revisions
 
-The only revisions made to our scripts after the competitions were in order to make the scripts capable of running in a repo clone's local environment without any changes, in case someone else would like to run the scripts for themselves.  We also slightly modified the titles of our existing graphs for sake of clarity in a non-video presentation format, and the market sentiment analysis code was slightly revised for ease-of-use by people unfamiliar with the script.
+The only revisions made to our scripts after the competitions were in order to make the scripts capable of running in a repo clone's local environment without any changes, in case someone else would like to run the scripts for themselves.  We also slightly modified the titles of our existing graphs for sake of clarity in a non-video presentation format, and the market sentiment analysis code was overhauled to better account for real-world variables not accounted for in our original code and to provide improved analytics.
 
 ### Abandoned Work (prior to deadline)
 
@@ -46,7 +61,7 @@ The only revisions made to our scripts after the competitions were in order to m
 
 ## Submitted Work Timeline
 
-## 📈 [**Candlesticks**](SubmittedScripts/Candlesticks): Surface-Level Analysis of Market Data
+## [**Candlesticks**](SubmittedScripts/Candlesticks): Surface-Level Analysis of Market Data
 
 First, we decided to visualize the two datasets we were working with, using "candlestick" visualization method, so that we could have a baseline understanding of the market's behavior over the past decade and verify data integrity (which turned out to be useful, because one of the datasets we were using was incorrect).
 
@@ -59,7 +74,7 @@ First, we decided to visualize the two datasets we were working with, using "can
 
 ---
 
-## 🧠 [**FeatureImportanceAnalysis**](SubmittedScripts/FeatureImportanceAnalysis): Hypothesis Testing & Parameter Diagnostics
+## [**FeatureImportanceAnalysis**](SubmittedScripts/FeatureImportanceAnalysis): Hypothesis Testing & Parameter Diagnostics
 
 ## Intro
 
@@ -141,11 +156,9 @@ RandomForest's feature importance analysis is much better at delineating low-imp
 
 ---
 
-## 📉 [**BrownianStrategy**](SubmittedScripts/BrownianStrategy): Stochastic Price Simulation
+## [**BrownianStrategy**](SubmittedScripts/BrownianStrategy): Stochastic Price Simulation
 
-- [**BrownianStrategy**](SubmittedScripts/BrownianStrategy):
-
-A simulation strategy based on Geometric Brownian Motion (GBM) and ordinary differential equations. This approach produced an average return of 88.73% (with 2x leverage), outperforming the money market, but not as markedly as our market sentiment analysis strategy.
+A simulation strategy based on Geometric Brownian Motion (GBM) and ordinary differential equations. This approach produced an average portfolio growth of 2.89x over 10 years (with 2x leverage), outperforming the S&P 500 market, which has roughly ~2.59× growth per 10 years.
 
 One trial (x-axis representing days passed within one trial):
 
@@ -155,11 +168,11 @@ One trial (x-axis representing days passed within one trial):
 
 ![Images/BrownianMotionTrials.png](Images/BrownianMotionTrials.png)
 
-## 📊 MultipleLinearRegression: Parameter Retrieval for Market Sentiment Strategy
+## MultipleLinearRegression: Parameter Retrieval for Market Sentiment Strategy
 
 - [**MultipleLinearRegression**](SubmittedScripts/MultipleLinearRegression):
 
-MLR was used to calculate the coefficients for our market sentiment analysis.  It was integral in determining how different features interacted and contributed to market predictions.
+MLR was used to calculate the coefficients for our market sentiment analysis.  It was integral in determining how different features interacted and contributed to market predictions, and it was based on the first 1350 days from the dataset.
 
 ![Images/MLREstimates.png](Images/MLREstimates.png)
 
@@ -171,16 +184,264 @@ Finally, we manually edited our combined.csv file using Microsoft Excel function
 
 ---
 
-## 🧭 MarketSentimentStrategy: Sentiment-Based Trading Logic
+## [**MarketSentimentStrategy**](SubmittedScripts/MarketSentimentStrategy): Sentiment-Based Trading Logic
 
-- [**MarketSentimentStrategy**](SubmittedScripts/MarketSentimentStrategy):
+A trading strategy based on market sentiment analysis over a 10-year was tested on data that was not used in our MLR parameter estimation to avoid data leakage.  Random sampling might cause our results to be unrealistically high due to its tendency to avoid persistent negative streaks in the market, so we decided that in order to maximize realism with the limited data we had been provided, we would settle on serial model for the remaining days in the 10-year period not used for training, selecting 1 year period at a time within each trial.
 
-A trading strategy based on market sentiment analysis, which achieved an average return of 23% with 2x leverage, amounting to 130% growth over a 10-year period.  This was tested on the data that was not used in our MLR parameter estimation to avoid data leakage.
+The center-most logic in our algorithm is the following:
 
-Median Final Money: 22,920.22  
-Geometric Mean Growth Factor: 2.31  
-Compounded 10-Year Projection: 23,113.19  
+> If the lowest price of the day is below the stop price, then we sell before the day ends to minimize daily losses:
+```
+if low_da < stopPrice:
+  sellPrice = stopPrice
+```
 
-![Images/marketSentimentStrategy.png](Images/marketSentimentStrategy.png)
+> If the estimated highest price of the day is hit, then we sell at the high point before the day ends:
+```
+else if high_da >= highestEstimate:
+  sellPrice = highestEstimate
+```
 
----
+> And otherwise, we simply sell at the closing price at the end of the day between the stop price and our high estimate, solidifying gains:
+```
+else:
+  sellPrice = close_da
+```
+
+But a key problem we run into with this approach is how based on our data not providing within-day stock information, there are many cases where both the low price of the day is below the stop price and the highest price of the day, meaning we don't know whether the model hit our stop price or our high estimate first.  As a result, we need to add a new first condition which estimates the probability of either the stop price, or the high estimate, being hit first, based on market data:
+```
+if low_da < stopPrice and high_da >= highestEstimate:
+  sellPrice = stopPrice or highestEstimate # Randomly chosen based on the probability of stopPrice vs highestEstimate being hit first
+```
+
+So the final core logic in the model was:
+
+```
+if low_da < stopPrice and high_da >= highestEstimate:
+  sellPrice = stopPrice or highestEstimate # Randomly chosen based on the probability of stopPrice vs highestEstimate being hit first
+else if low_da < stopPrice:
+  sellPrice = stopPrice
+else if high_da >= highestEstimate:
+  sellPrice = highestEstimate
+else:
+  sellPrice = close_da
+```
+
+By the time we implemented this model, we were about to run out of time in the competition, so we arbitrarily decided upon a 2% drop stop rule, which gave us our original result of **$124k** returns over 10 years with 2x leverage and won us the competition.  But upon expanding the script after the competition (also to account for more real-world factors like trading fees, alpha fading, stop-sell slipping, and missing a cashout at a high point due to trading lag, which we don't have time to go into here), we can take a deeper look at how various stop auto-sell factors affect stock return rate below (for instance, a 0.5 stop loss implies selling shares after a 5% drop from the opening/buy price for the day):
+
+![Images/mssStopLoss.png](Images/mssStopLoss.png)
+
+Taking a closer look at each epoch (with 300 trials per epoch):
+
+### Epoch with stop-loss: 0.000001
+```
+Median Final Money: 8,075.84
+Min Final Money: 2,289.92
+Max Final Money: 41,739.32
+Std Dev Final Money: 6,367.27
+Mean Growth Factor: 1.0453
+Mean Avg delta: -0.0103
+Mean Std Dev delta: 0.9407
+Mean % Above Buy: 41.83%
+Mean % Below Buy: 58.09%
+Stop-Loss Hit Rate: 37.70%
+Mean High-Low Dev: 1.2875 (3.42%)
+Geometric Growth: 0.88
+Projected Final Money After 10 Years: 2,928.67
+```
+![Images/mss1e-06.png](Images/mss1e-06.png)
+
+### Epoch with stop-loss: 0.0001
+```
+Median Final Money: 8,600.41
+Min Final Money: 3,206.11
+Max Final Money: 43,583.41
+Std Dev Final Money: 6,049.53
+Mean Growth Factor: 1.0230
+Mean Avg delta: -0.0091
+Mean Std Dev delta: 0.9348
+Mean % Above Buy: 42.19%
+Mean % Below Buy: 57.76%
+Stop-Loss Hit Rate: 40.48%
+Mean High-Low Dev: 1.2771 (3.40%)
+Geometric Growth: 0.89
+Projected Final Money After 10 Years: 3,083.71
+```
+![Images/mss1e-04.png](Images/mss1e-04.png)
+
+### Epoch with stop-loss: 0.0005
+```
+Median Final Money: 8,600.05
+Min Final Money: 2,398.91
+Max Final Money: 38,461.60
+Std Dev Final Money: 5,753.56
+Mean Growth Factor: 1.0065
+Mean Avg delta: -0.0118
+Mean Std Dev delta: 0.9378
+Mean % Above Buy: 42.08%
+Mean % Below Buy: 57.85%
+Stop-Loss Hit Rate: 41.27%
+Mean High-Low Dev: 1.2918 (3.42%)
+Geometric Growth: 0.87
+Projected Final Money After 10 Years: 2,586.10
+```
+![Images/mss5e-04.png](Images/mss5e-04.png)
+
+### Analysis (1e-06 to 0.0005)
+The above three epoch returns attenuated over time due to our alpha decay rate, which causes our alpha parameter to reduce in predictive accuracy over time due to real-world market factors.
+
+### Epoch with stop-loss: 0.001
+```
+Median Final Money: 12,765.94
+Min Final Money: 3,196.44
+Max Final Money: 55,284.33
+Std Dev Final Money: 8,637.83
+Mean Growth Factor: 1.4907
+Mean Avg delta: 0.0433
+Mean Std Dev delta: 1.0568
+Mean % Above Buy: 44.41%
+Mean % Below Buy: 55.54%
+Stop-Loss Hit Rate: 54.76%
+Mean High-Low Dev: 1.3090 (3.47%)
+Geometric Growth: 1.28
+Projected Final Money After 10 Years: 113,596.46
+```
+![Images/mss1e-02.png](Images/mss1e-03.png)
+
+### Epoch with stop-loss: 0.005
+```
+Median Final Money: 12,795.96
+Min Final Money: 2,596.96
+Max Final Money: 61,773.92
+Std Dev Final Money: 7,889.64
+Mean Growth Factor: 1.4333
+Mean Avg delta: 0.0379
+Mean Std Dev delta: 1.0484
+Mean % Above Buy: 44.46%
+Mean % Below Buy: 55.48%
+Stop-Loss Hit Rate: 53.57%
+Mean High-Low Dev: 1.2852 (3.40%)
+Geometric Growth: 1.24
+Projected Final Money After 10 Years: 88,759.39
+```
+![Images/mss5e-03.png](Images/mss5e-03.png)
+
+### Epoch with stop-loss: 0.01
+```
+Median Final Money: 12,476.00
+Min Final Money: 2,303.87
+Max Final Money: 46,480.25
+Std Dev Final Money: 7,445.87
+Mean Growth Factor: 1.3798
+Mean Avg delta: 0.0358
+Mean Std Dev delta: 1.0405
+Mean % Above Buy: 44.39%
+Mean % Below Buy: 55.57%
+Stop-Loss Hit Rate: 52.38%
+Mean High-Low Dev: 1.2923 (3.43%)
+Geometric Growth: 1.20
+Projected Final Money After 10 Years: 61,460.12
+```
+![Images/mss5e-03.png](Images/mss01.png)
+
+### Epoch with stop-loss: 0.025
+```
+Median Final Money: 12,890.01
+Min Final Money: 1,724.19
+Max Final Money: 44,288.66
+Std Dev Final Money: 7,233.70
+Mean Growth Factor: 1.4035
+Mean Avg delta: 0.0359
+Mean Std Dev delta: 1.0409
+Mean % Above Buy: 44.33%
+Mean % Below Buy: 55.60%
+Stop-Loss Hit Rate: 50.79%
+Mean High-Low Dev: 1.2972 (3.42%)
+Geometric Growth: 1.23
+Projected Final Money After 10 Years: 76,809.84
+```
+![Images/mss025.png](Images/mss025.png)
+
+### Epoch with stop-loss: 0.05
+```
+Median Final Money: 12,487.45
+Min Final Money: 2,967.02
+Max Final Money: 58,694.50
+Std Dev Final Money: 8,707.36
+Mean Growth Factor: 1.4447
+Mean Avg delta: 0.0374
+Mean Std Dev delta: 1.0451
+Mean % Above Buy: 44.52%
+Mean % Below Buy: 55.41%
+Stop-Loss Hit Rate: 53.17%
+Mean High-Low Dev: 1.3010 (3.45%)
+Geometric Growth: 1.22
+Projected Final Money After 10 Years: 74,642.72
+```
+![Images/mss05.png](Images/mss05.png)
+
+### Analysis (0.001 to 0.05)
+Somewhere between a 0.0005 and 0.001 stop loss rate seems to be a threshold at which point we start making positive returns.
+
+The above three stocks did not attenuate returns over time (though their return increase decelerated) likely due to the fact their stop loss factors were above the return threshold.
+
+### Epoch with stop-loss: 0.075
+```
+Median Final Money: 2,386.33
+Min Final Money: 25.55
+Max Final Money: 39,920.31
+Std Dev Final Money: 5,703.53
+Mean Growth Factor: 0.4494
+Mean Avg delta: 0.0375
+Mean Std Dev delta: 1.0561
+Mean % Above Buy: 44.21%
+Mean % Below Buy: 55.73%
+Stop-Loss Hit Rate: 51.19%
+Mean High-Low Dev: 1.2970 (3.42%)
+Geometric Growth: 0.21
+Projected Final Money After 10 Years: 0.00
+```
+![Images/mss075.png](Images/mss075.png)
+
+
+### Epoch with stop-loss: 0.1
+```
+Median Final Money: 2,669.37
+Min Final Money: 22.97
+Max Final Money: 33,525.21
+Std Dev Final Money: 5,453.48
+Mean Growth Factor: 0.4766
+Mean Avg delta: 0.0408
+Mean Std Dev delta: 1.0579
+Mean % Above Buy: 44.35%
+Mean % Below Buy: 55.60%
+Stop-Loss Hit Rate: 50.00%
+Mean High-Low Dev: 1.2991 (3.44%)
+Geometric Growth: 0.23
+Projected Final Money After 10 Years: 0.00
+```
+![Images/mss01.png](Images/mss1.png)
+
+### Epoch with stop-loss: 0.9
+```
+Median Final Money: 2,290.40
+Min Final Money: 0.37
+Max Final Money: 50,372.33
+Std Dev Final Money: 6,383.13
+Mean Growth Factor: 0.4765
+Mean Avg delta: 0.0384
+Mean Std Dev delta: 1.0623
+Mean % Above Buy: 44.33%
+Mean % Below Buy: 55.61%
+Stop-Loss Hit Rate: 55.56%
+Mean High-Low Dev: 1.3152 (3.46%)
+Geometric Growth: 0.21
+Projected Final Money After 10 Years: 0.00
+```
+![Images/mss09.png](Images/mss09.png)
+
+### Analysis (0.075 to 0.9)
+Somewhere between 0.05 and 0.075 seems to be a threshold at which point returns again become negative.  By the time the stop loss sell rate is 10%, 
+
+## Final Analysis
+With all said and done, a stop loss sell rate of 0.001 (sell after a 0.1% drop from the opening price) yielded $113,596.46 returns after 10 years, a $103,596.46 and 1135.96% increase from our original $10,000, significantly outperforming the S&P 500's ~$25,900 returns after 10 years.  This strategy was significantly riskier due to the all-in 2x-leveraged nature of our investments, which is reflected in how with a first-year standard deviation of $8,637.83 and first-year median returns of $12,765.94, there is a ~37% chance of net losses in the first year.  But we could easily implement additional safety measures depending on the client's risk to mitigate loss chance at the expense of higher possible payoffs.
