@@ -16,6 +16,22 @@ Our models increased our **$10k** portfolio budget (with 2x leveraged return) to
 
 ![Announcement Post](Images/announcementPost.jpg)
 
+## Technologies Used
+
+- **Python 3.11** – Primary programming language for all modeling, analysis, and simulation scripts
+  - **random** and **statistics** libraries - Core logic for stochastic simulation and trial-based evaluation
+  - **Pandas** – Data manipulation and preprocessing
+  - **NumPy** – Numerical operations and matrix handling
+  - **Matplotlib** – Data visualization (used for generating all plotted figures)
+  - **Scikit-learn** – Machine learning framework used for:
+    - `SelectKBest` feature selection
+    - `RandomForestRegressor` for nonlinear feature importance
+    - `MultipleLinearRegression` modeling
+- **R + RStudio** – Alternate programming language for self-contained analysis
+- **VSCode** – Main development environment for code collaboration
+- **Git + GitHub** – Version control and public codebase hosting
+- **CSV Imports/Manipulation + Microsoft Excel** – Historical financial data, some manually and some procedurally curated into CSVs
+
 ## Foreword
 
 ### Post Hoc Code Revisions
@@ -150,6 +166,8 @@ MLR was used to calculate the coefficients for our market sentiment analysis.  I
 Then implemented in our MarketSentimentStrategy script:
 
 ![Images/paramsInCode.png](Images/paramsInCode.png)
+
+Finally, we manually edited our combined.csv file using Microsoft Excel functionality, that is used in the MarketSentimentStrategy model.  The new csv file features "lag" data for each day based on parameters in this script, allowing us to analyze market sentiment on a day-by-day basis.
 
 ---
 
