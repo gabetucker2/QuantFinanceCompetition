@@ -175,7 +175,7 @@ Finally, we manually edited our combined.csv file using Microsoft Excel function
 
 - [**MarketSentimentStrategy**](SubmittedScripts/MarketSentimentStrategy):
 
-A trading strategy based on market sentiment analysis, which achieved an average return of 23% with 2x leverage, amounting to 130% growth over a 10-year period.  This was tested on the data that was not used in our MLR parameter estimation to avoid data leakage.
+A trading strategy based on market sentiment analysis, which achieved an average return of 23% with 2x leverage, amounting to roughly 131% growth over a 10-year period.  This was tested on the data that was not used in our MLR parameter estimation to avoid data leakage.
 
 Geometric Mean Growth Factor: 2.31  
 Compounded 10-Year Projection: 23,113.19  
