@@ -4,7 +4,7 @@
 
 The **2024 OSU Quantitative Finance Competition** was a competition in which our team secured the **Gold Medal** for achieving the best statistical analysis and Sharpe ratio–adjusted return out of 15 teams.
 
-Our market sentiment strategy increased our **$10k** portfolio budget (with 2x leveraged return) to **$124k** through day trading over a 10-year period in our simulations.  After additional revisions to improve accuracy, it increased a **$10k** portfolio budget (with 2x leveraged return) to **$114** over the same 10-year period.
+Our market sentiment strategy increased our **$10k** portfolio budget (with 2x leveraged return) to **$124k** through day trading over a 10-year period in our simulations.  After implementing additional revisions to improve accuracy, it increased a **$10k** portfolio budget (with 2x leveraged return) to **$114** over the same 10-year period.
 
 ## Team Members
 
